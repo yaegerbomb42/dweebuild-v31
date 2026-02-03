@@ -1,7 +1,7 @@
 [project]
 name = "dweebuild"
-version = "31.0.0"
-description = "The Architect Edition: Tool-Augmented Agents + TDD Loop"
+version = "31.1.0"
+description = "The Architect Edition: Tool-Augmented Agents + TDD Loop (Production Upgrade)"
 authors = [{name = "Antigravity", email = "antigravity@gemini.google.com"}]
 dependencies = [
     "streamlit>=1.42.0",
@@ -9,12 +9,18 @@ dependencies = [
     "playwright>=1.41.0",
     "watchdog>=4.0.0",
     "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
     "aiofiles>=23.2.1",
     "duckduckgo-search>=5.0.0",
-    "pydantic>=2.0.0"
+    "pydantic>=2.0.0",
+    "black>=24.0.0",
+    "ruff>=0.2.0",
+    "radon>=6.0.0",
+    "python-dotenv>=1.0.0"
 ]
 requires-python = ">=3.10"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
