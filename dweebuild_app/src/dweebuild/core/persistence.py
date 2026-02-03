@@ -3,8 +3,9 @@ import os
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any
-from .memory import ProjectMemory
-from .modes import WorkMode
+from dweebuild.core.memory import ProjectMemory
+from dweebuild.core.modes import WorkMode
+
 
 class SessionManager:
     """

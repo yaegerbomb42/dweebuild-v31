@@ -2,7 +2,8 @@ import os
 import json
 from pathlib import Path
 from typing import Dict, Any
-from .tool import BaseTool, FunctionalTool
+from dweebuild.core.tool import BaseTool, FunctionalTool
+
 
 class ToolFactory:
     """

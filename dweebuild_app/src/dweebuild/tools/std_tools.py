@@ -3,7 +3,8 @@ import os
 import subprocess
 from typing import Any, Optional
 from pathlib import Path
-from .tool import BaseTool
+from dweebuild.core.tool import BaseTool
+
 
 # === EXISTING TOOLS (Enhanced) ===
 
