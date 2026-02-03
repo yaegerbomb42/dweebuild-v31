@@ -10,7 +10,7 @@ class EngineerAgent(BaseAgent):
     Enhanced with complexity recognition and appropriate coding standards.
     """
     def __init__(self, mission: str, working_dir: str):
-        super().__init__(name="ENGINEER", mission=mission)
+        super().__init__(name="ENGINEER", role="Python Developer", mission=mission)
         self.working_dir = working_dir
         self.equip(ShellTool())
         self.equip(FileWriteTool(working_dir))

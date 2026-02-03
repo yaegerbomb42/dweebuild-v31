@@ -11,7 +11,7 @@ class ArchitectAgent(BaseAgent):
     Now with intelligent tech stack selection.
     """
     def __init__(self, mission: str, working_dir: str):
-        super().__init__(name="ARCHITECT", mission=mission)
+        super().__init__(name="ARCHITECT", role="System Designer", mission=mission)
         self.working_dir = working_dir
         self.equip(FileWriteTool(working_dir))
         self.tech_advisor = TechStackAdvisor()
