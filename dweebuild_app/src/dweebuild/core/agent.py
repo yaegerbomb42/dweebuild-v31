@@ -14,6 +14,7 @@ class BaseAgent(abc.ABC):
     Abstract Base Class for Dweebuild Agents.
     """
     def __init__(self, name: str, role: str, mission: str):
+        from .llm import LLMClient
         self.name = name
         self.role = role
         self.mission = mission
@@ -22,6 +23,7 @@ class BaseAgent(abc.ABC):
         self.logs = deque(maxlen=100)
         self.tools = {}
         self.memory = None # Assigned by Orchestrator
+        self.llm = LLMClient()  # Every agent gets an LLM client
 
     def equip(self, tool):
         """Register a tool for the agent to use."""
