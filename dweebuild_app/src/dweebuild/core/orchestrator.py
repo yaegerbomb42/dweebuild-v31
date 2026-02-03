@@ -82,7 +82,7 @@ class Orchestrator:
         return None
     
     async def _run_agent_safe(self, agent: BaseAgent, task: str):
-        """Run agent with timeout and error handling."""
+        """Run agent with timeout, error handling, and automatic task generation."""
         async with self.agent_locks[agent.name]:
             try:
                 result = await asyncio.wait_for(
@@ -90,6 +90,10 @@ class Orchestrator:
                     timeout=300  # 5 minute timeout
                 )
                 self.memory.add_log(agent.name, f"Completed: {task[:50]}...", "SUCCESS")
+                
+                # ✨ LOOP OF TRUTH: Auto-generate follow-up tasks
+                await self._generate_follow_up_tasks(agent.name, task, result)
+                
                 return result
             except asyncio.TimeoutError:
                 self.memory.add_log(agent.name, "Task timeout", "ERR")
@@ -97,6 +101,34 @@ class Orchestrator:
             except Exception as e:
                 self.memory.add_log(agent.name, f"Error: {e}", "ERR")
                 agent.status = "ERROR"
+    
+    async def _generate_follow_up_tasks(self, agent_name: str, completed_task: str, result: str):
+        """
+        Implements the Loop of Truth: automatically chain tasks between agents.
+        """
+        task_lower = completed_task.lower()
+        
+        # ARCHITECT → ENGINEER
+        if agent_name == "ARCHITECT" and ("design" in task_lower or "architecture" in task_lower):
+            self.add_task("Implement: Create main game file with Panda3D", priority=1)
+            self.add_task("Implement: Create monkey character class", priority=0)
+            self.add_task("Implement: Create banana collectible system", priority=0)
+            self.add_task("Implement: Create house/environment classes", priority=0)
+            self.memory.add_log("SYSTEM", "✨ Generated implementation tasks for Engineer", "INFO")
+        
+        # ENGINEER → QA
+        elif agent_name == "ENGINEER" and "implement" in task_lower:
+            self.add_task("Verify: Run tests and validate implementation", priority=1)
+            self.memory.add_log("SYSTEM", "✨ Generated QA validation task", "INFO")
+        
+        # QA → ENGINEER (if tests fail) or NEXT FEATURE (if pass)
+        elif agent_name == "QA_LEAD":
+            if "fail" in result.lower() or "error" in result.lower():
+                self.add_task(f"Fix: Address test failures in {completed_task}", priority=1)
+                self.memory.add_log("SYSTEM", "⚠️ Tests failed - re-queuing for Engineer", "WARN")
+            else:
+                # Tests passed - move to next feature
+                self.memory.add_log("SYSTEM", "✅ Tests passed - ready for next feature", "SUCCESS")
 
     def start(self):
         self.is_running = True
